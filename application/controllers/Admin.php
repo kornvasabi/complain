@@ -8,6 +8,7 @@ class Admin extends CI_Controller {
         parent::__construct();
         // user access
         is_logged_in();
+        $this->load->model('Select_option_model');
     }
 
     // function index view
@@ -152,7 +153,7 @@ class Admin extends CI_Controller {
     {
         $data['title'] = 'User Data';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-        $data['user_member'] = $this->db->order_by('id', 'DESC');
+        $data['user_member'] = $this->db->order_by('id','desc');
         $data['user_member'] = $this->db->get_where('user', ['role_id' => 2])->result_array();
 
         $this->load->view('templates/admin_header', $data);
@@ -193,7 +194,13 @@ class Admin extends CI_Controller {
         if ($this->form_validation->run() == false) {
             $data['title'] = 'Change User Data';
             $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+            
             $data['member'] = $this->db->get_where('user', ['id' => $id])->row_array();
+            
+            $data['user_role'] = $this->Select_option_model->getUserRole();
+
+            // print_r($data['member_option']); exit;
+
             $this->load->view('templates/admin_header', $data);
             $this->load->view('templates/admin_sidebar');
             $this->load->view('templates/admin_topbar', $data);
@@ -207,6 +214,8 @@ class Admin extends CI_Controller {
                 'role_id' => $this->input->post('role_id'),
                 'is_active' => $this->input->post('is_active')
             ];
+
+            // print_r($data); exit;
                 
             $this->db->update('user', $data, ['id' => $data['id']]);
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">

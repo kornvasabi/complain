@@ -28,17 +28,8 @@
                 	</div>
                     <div class="form-group">
                         <label for="role_id">User Authority</label>
-                        <select class="form-control" id="role_id" name="role_id">
-                            <option value="2">
-                            <?php
-                                if ($member['role_id'] == 2) {
-                                    echo 'Member';
-                                } else {
-                                    echo 'Admin';
-                                }
-                            ?>
-                            </option>
-                            <option value="1">Admin</option>
+                        <select class="form-control" id="role_id" name="role_id">                
+                            <?php echo $user_role; ?>
                         </select>
                     </div>
                     <div class="form-group">
